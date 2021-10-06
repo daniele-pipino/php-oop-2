@@ -14,6 +14,7 @@ $user->insertCreditCard($c);
 // ------------- user classes -----------//
 class User
 {
+    protected $user_id;
     protected $name;
     protected $surname;
     protected $age;
@@ -22,8 +23,9 @@ class User
 
     // requested value
 
-    public function __construct($_name, $_surname, $_age)
+    public function __construct($id, $_name, $_surname, $_age)
     {
+        $this->user_id = $id;
         $this->name = $_name;
         $this->age = $_age;
         $this->surname = $_surname;
@@ -37,6 +39,10 @@ class Client extends User
     use Discount;
     use CreditCard;
 
+
+
+
+    // set discount
     private function setDiscount()
     {
         if ($this->age < 12) {
@@ -47,12 +53,15 @@ class Client extends User
             $this->percentage = 0;
         }
     }
-    // getdiscount
 
+    // getdiscount
     public function getDiscount()
     {
         $this->setDiscount();
+        echo "Il tuo sconto è del $this->percentage%";
     }
+
+    // 
 }
 
 // employee
@@ -68,9 +77,21 @@ class Employee extends User
 
 trait CreditCard
 {
+    private $cardid;
     private $creditcard_number;
     private $cvv;
     private $validation_date;
+
+    // funzione per creare  carta di credito
+    public function setCreditCard($card_id, $num, $cvv, $date)
+    {
+        $this->cardid = $card_id;
+        $this->creditcard_number = $num;
+        $this->cvv = $cvv;
+        $this->validation_date = $date;
+    }
+
+    // assegnazione della carta creata all'utente con id corrispondente
 }
 
 // ---------------------products-------------------//
@@ -102,6 +123,7 @@ trait Discount
 
 // GO SHOPPING!!!!!!
 
-$client1 = new Client('Daniele', 'Pipino', 78);
+$client1 = new Client(1, 'Daniele', 'Pipino', 21);
 $client1->getDiscount();
+$client1->setCreditCard(1, '53555333535335', '733', '12/24/45');
 var_dump(($client1));
